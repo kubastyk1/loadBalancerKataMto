@@ -52,17 +52,13 @@ public class ServerLoadBalancerTest {
 		Vm theSecondVm = a(vm().ofSize(1));
 		balance(aListOfServersWith(theServer), aListOfVmsWith(theFirstVm, theSecondVm));
 
-		assertThat(theServer, hasVmsCountOf(2));
+		assertThat(theServer, ServerVmsCountMatcher.hasVmsCountOf(2));
 		assertThat("the server should contain vm", theServer.contains(theFirstVm));
 		assertThat("the server should contain vm", theServer.contains(theSecondVm));
 
 	}
 	private Vm[] aListOfVmsWith(Vm... vms) {
 		return vms;
-	}
-
-	private Matcher<? super Server> hasVmsCountOf(int expectedVmsCount) {
-		return new ServerVmsCountMatcher(expectedVmsCount);
 	}
 
 	private void balance(Server[] servers, Vm[] vms) {
