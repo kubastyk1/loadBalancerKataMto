@@ -15,15 +15,11 @@ public class ServerLoadBalancerTest {
 
 	@Test
 	public void balancingAServer_noVms_serverStaysEmpty(){
-		Server theSever = a(server().withCapacity(1));
+		Server theSever = a(ServerBuilder.server().withCapacity(1));
 
 		balancing(aServerListWith(theSever), anEmptyListOfVms());
 
-		assertThat(theSever, hasCurrentLoadOf(0.0d));
-	}
-
-	private Matcher<? super Server> hasCurrentLoadOf(double expectedLoadPercentage) {
-		return new CurrentLoadPercentageMacher(expectedLoadPercentage);
+		assertThat(theSever, CurrentLoadPercentageMacher.hasCurrentLoadOf(0.0d));
 	}
 
 	private void balancing(Server[] servers, Vm[] vms) {
@@ -40,9 +36,5 @@ public class ServerLoadBalancerTest {
 
 	private Server a(ServerBuilder builder) {
 		return builder.build();
-	}
-
-	private ServerBuilder server() {
-		return new ServerBuilder();
 	}
 }
